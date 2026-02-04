@@ -5,4 +5,4 @@
 
 ## Terminus FE1.1S USB 2.0 port hub
 1. Connects all the USB-A ports on the top of the Pixel Kit into one unified port
-2. It routes its ouput into the FT231XS
+2. It routes its output into the FT231XS
