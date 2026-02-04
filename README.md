@@ -2,6 +2,7 @@
 A repository with everything about the Kano Pixel Kit
 
 ## 🗂️ Contents
+[Integrated Circuits](#info-about-the-ics0on-the-pixel-kit)
 
 # Info about the ICs on the Pixel Kit
 ## FTDI FT231XS USB-to-UART converter
