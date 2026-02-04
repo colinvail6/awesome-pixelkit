@@ -1,6 +1,8 @@
 # awesome-pixelkit
 A repository with everything about the Kano Pixel Kit
 
+## 🗂️ Contents
+
 # Info about the ICs on the Pixel Kit
 ## FTDI FT231XS USB-to-UART converter
 1. The FT231XS on the Pixel Kit is used to connect to its ESP-WROOM-32 microntroller
