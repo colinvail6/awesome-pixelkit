@@ -17,6 +17,9 @@ A repository with everything about the Kano Pixel Kit
 - Joystick left 🕹️ = GPIO26
 - Joystick right 🕹️ = GPIO25
 - Joystick click 🕹️ = GPIO27
+- Button B 🎛️ = GPIO18
+- Button A 🎛️ = GPIO23
+- Reset Button 🎛️ = GPIO5
 
 
 # Integrated Circuits
