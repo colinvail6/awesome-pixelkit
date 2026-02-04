@@ -12,6 +12,11 @@ A repository with everything about the Kano Pixel Kit
 - Buzzer 🔊 = GPIO22
 - Dial/Potentiometer 🎛️ = GPIO36/VP
 - MEMS microphone 🎙️ = GPIO39/VN
+- Joystick up 🕹️ = GPIO35
+- Joystick down 🕹️ = GPIO34
+- Joystick left 🕹️ = GPIO26
+- Joystick right 🕹️ = GPIO25
+- Joystick click 🕹️ = GPIO27
 
 
 # Integrated Circuits
