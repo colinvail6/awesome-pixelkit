@@ -1,8 +1,18 @@
 # awesome-pixelkit
 A repository with everything about the Kano Pixel Kit
 
+
 ## 🗂️ Contents
+[📌 Pinout](#pinout)
 [💾 Integrated Circuits](#integrated-circuits)
+
+
+# Pinout
+NeoPixel LEDs 💡 = GPIO4
+Buzzer 🔊 = GPIO22
+Dial/Potentiometer 🎛️ = GPIO36/VP
+MEMS microphone 🎙️ = GPIO39/VN
+
 
 # Integrated Circuits
 ## FTDI FT231XS USB-to-UART converter
