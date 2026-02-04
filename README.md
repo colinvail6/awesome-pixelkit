@@ -1,3 +1,8 @@
+<p align="center">
+  <a href="https://awesome.re"><img src="https://awesome.re/badge.svg" alt="Awesome"></a>
+</p>
+
+
 # awesome-pixelkit
 A repository with everything about the Kano Pixel Kit
 
