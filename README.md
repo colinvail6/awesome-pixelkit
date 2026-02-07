@@ -47,6 +47,6 @@ The Pixel Kit can run CircuitPython using [this installation](https://circuitpyt
 ## Arduino
 Install the ESP32 boards package and select "ESP32 Dev Module", then set "Flash Mode" to DIO. I am currently working on a helper library for Arduino and the Pixel Kit.
 
-## Bugs
-# USB
+# Bugs
+## USB
 Currently the [automatic bootloader](https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/boot-mode-selection.html#automatic-bootloader) does not work on Windows 11 with the newest FTDI drivers.
