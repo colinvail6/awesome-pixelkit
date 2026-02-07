@@ -10,6 +10,7 @@ A repository with everything about the Kano Pixel Kit
 ## 🗂️ Contents
 - [📌 Pinout](#pinout)
 - [💾 Integrated Circuits](#integrated-circuits)
+- [🐍 Programming Lanuages](#programming-languages)
 
 
 # Pinout
@@ -35,3 +36,8 @@ A repository with everything about the Kano Pixel Kit
 ## Terminus FE1.1S USB 2.0 port hub
 1. Connects all the USB-A ports on the top of the Pixel Kit into one unified port
 2. It routes its output into the FT231XS
+
+
+# Programming Languages
+## MicroPython
+The Pixel Kit can run MicroPython using [Pixel32](https://github.com/murilopolese/kano-pixel-kit-pixel32)
