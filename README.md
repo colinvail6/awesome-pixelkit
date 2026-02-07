@@ -49,4 +49,4 @@ Install the ESP32 boards package and select "ESP32 Dev Module", then set "Flash 
 
 # Bugs
 ## USB
-Currently the [automatic bootloader](https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/boot-mode-selection.html#automatic-bootloader) does not work on Windows 11 with the newest FTDI drivers.
+Currently the [automatic bootloader](https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/boot-mode-selection.html#automatic-bootloader) does not work on Windows 11 with the newest FTDI drivers. See [#1](https://github.com/colinvail6/awesome-pixelkit/issues/1)
