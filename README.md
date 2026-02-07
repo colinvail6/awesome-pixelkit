@@ -11,6 +11,7 @@ A repository with everything about the Kano Pixel Kit
 - [📌 Pinout](#pinout)
 - [💾 Integrated Circuits](#integrated-circuits)
 - [🐍 Programming Lanuages](#programming-languages)
+- [💻 Examples](#examples)
 - [🪲 Bugs](#bugs)
 
 
@@ -46,6 +47,11 @@ The Pixel Kit can run MicroPython using [Pixel32](https://github.com/murilopoles
 The Pixel Kit can run CircuitPython using [this installation](https://circuitpython.org/board/doit_esp32_devkit_v1/) and [my helper libraries](https://github.com/colinvail6/awesome-pixelkit/tree/main/src/circuitpython).
 ## Arduino
 Install the ESP32 boards package and select "ESP32 Dev Module", then set "Flash Mode" to DIO. I am currently working on a helper library for Arduino and the Pixel Kit.
+
+
+# Examples
+## CircuitPython
+[Fast Perlin noise algorithm](https://github.com/colinvail6/awesome-pixelkit/blob/main/code/circuitpython/fastperlin.py)
 
 # Bugs
 ## USB
