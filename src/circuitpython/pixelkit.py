@@ -1,8 +1,7 @@
 import board
-import analogio, digitalio, pwmio, simpleio
+import analogio, digitalio, pwmio
 import colorsys
 import neopixel
-from adafruit_pixel_framebuf import PixelFramebuffer
 from scroll_letters import letters
 from scroll_numbers import numbers
 from scroll_symbols import symbols
@@ -29,8 +28,7 @@ buzzer_pin = board.D22
 # Hardware Instances
 # Objects representing the available hardware on the Pixel Kit
 # Keep in mind that the Pixel Kit's matrix is NOT serpentine, meaning alternating CANNOT be true unless you are using a custom board
-np = neopixel.NeoPixel(pixel_pin, WIDTH * HEIGHT, brightness=0.03, auto_write=False)
-matrix = PixelFramebuffer(np, WIDTH, HEIGHT, alternating=False) # The PixelFramebuffer makes graphics much easier!
+np = neopixel.NeoPixel(pixel_pin, WIDTH * HEIGHT, brightness=0.05, auto_write=False)
 # Directions of digital pins must be set with var.direction = digitalio.Direction.INPUT or OUTPUT
 joystick_up = digitalio.DigitalInOut(joystick_up_pin)
 joystick_up.direction = digitalio.Direction.INPUT
@@ -52,6 +50,8 @@ button_reset.direction = digitalio.Direction.INPUT
 dial = analogio.AnalogIn(dial_pin)
 
 microphone = analogio.AnalogIn(microphone_pin)
+
+buzzer = pwmio.PWMOut(buzzer_pin, duty_cycle=0, frequency=400, variable_frequency=True)
 
 # Hardware Values
 # Values based on available hardware
@@ -188,20 +188,18 @@ def on_microphone(microphone_value):
 # Buzzer functions
 # The Pixel Kit has a buzzer, but it is very hard to hear
 def beep(frequency, duration):
-    simpleio.tone(buzzer_pin, frequency, duration)
+    buzzer.frequency = frequency
+    buzzer.duty_cycle = 2 ** 15
+    sleep(duration)
+    buzzer.duty_cycle = 0
 
 # LED functions
-def rgb_to_hex(rgb):
-    r, g, b = rgb
-    return 0x000000 | (r << 16) | (g << 8) | b
+def get_index_from_coordinate(x, y):
+    return ((y) * WIDTH) + (x)
 
-def hsv_to_rgb(h, s, v):
-    # Convert HSV values (0-360, 0-1, 0-1) to RGB tuple (0-255, 0-255, 0-255)
-    r, g, b = colorsys.hsv_to_rgb(h/360, s, v)
-    return (int(r*255), int(g*255), int(b*255))
-
-def set_pixel(x, y, rgb=(0, 255, 0)):
-    matrix.pixel(x, y, rgb_to_hex(rgb))
+def set_pixel(x, y, color=[0, 10, 0]):
+    index = get_index_from_coordinate(x, y)
+    np[index] = color
     
 def set_pixel_hsv(x, y, hsv=(0, 1, 1)):
     # Set a pixel using HSV values.
@@ -210,58 +208,13 @@ def set_pixel_hsv(x, y, hsv=(0, 1, 1)):
     set_pixel(x, y, rgb)
 
 def set_background(rgb=(255, 255, 0)):
-    matrix.fill(rgb_to_hex(rgb))
-
-def draw_line(x, y, sx, sy, rgb=(0, 255, 0)):
-    matrix.line(x, y, sx, sy, rgb_to_hex(rgb))
-
-def draw_hline(x, y, length, rgb=(0, 255, 0)):
-    matrix.hline(x, y, length, rgb_to_hex(rgb))
-
-def draw_vline(x, y, length, rgb=(0, 255, 0)):
-    matrix.vline(x, y, length, rgb_to_hex(rgb))
-
-def draw_rect(x, y, width, height, rgb=(0, 255, 0)):
-    matrix.rect(x, y, width, height, rgb_to_hex(rgb))
-
-def draw_fill_rect(x, y, width, height, rgb=(0, 255, 0)):
-    matrix.fill_rect(x, y, width, height, rgb_to_hex(rgb))
+    np.fill(rgb)
 
 def set_brightness(brightness=0.05): # Any number from 0 to 1
     np.brightness = brightness
 
-def set_pixel_hex(x, y, color=0x00FF00):
-    matrix.pixel(x, y, color)
-
-def get_pixel(x, y):
-    color = matrix.pixel(x, y)
-    return [(color >> 16) & 255,
-            (color >> 8) & 255,
-            color & 255]
-
-def get_pixel_hex(x, y):
-    matrix.pixel(x, y)
-
-def set_background_hex(color=0xFFFF00):
-    matrix.fill(color)
-
 def clear():
     set_background((0,0,0))
-
-def draw_line_hex(x, y, sx, sy, color=0x00FF00):
-    matrix.line(x, y, sx, sy, color)
-
-def draw_hline_hex(x, y, length, color=0x00FF00):
-    matrix.hline(x, y, length, color)
-
-def draw_vline_hex(x, y, length, color=0x00FF00):
-    matrix.vline(x, y, length, color)
-
-def draw_rect_hex(x, y, width, height, color=0x00FF00):
-    matrix.rect(x, y, width, height, color)
-
-def draw_fill_rect_hex(x, y, width, height, color=0x00FF00):
-    matrix.fill_rect(x, y, width, height, color)
 
 def draw_letter(x, y, l, c=[255, 255, 255]):
   if not str(l) in charset.keys():
@@ -300,4 +253,4 @@ def scroll(p, color=[255, 255, 255], background=[0,0,0], interval=0.1):
     sleep(interval)
 
 def render():
-    matrix.display()
+    np.write()
