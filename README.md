@@ -11,6 +11,7 @@ A branch of this repository that's all about the Kickstarter Kano Pixel Kit
 - [📌 Pinout](#pinout)
 - [💾 Integrated Circuits](#integrated-circuits)
 - [🐍 Programming Lanuages](#programming-languages)
+- [🐧 Linux](#linux)
 
 
 # Pinout
@@ -29,4 +30,9 @@ No pinout yet :(
 
 # Programming Languages
 ## Python
-The Pixel Kit can run Python using its built-in CPython installation
+The Pixel Kit can run Python using its built-in CPython installation.
+
+# Linux
+## What Types?
+### Armbian
+The Pixel Kit can run both Armbian Debian and Armbian Ubuntu.
