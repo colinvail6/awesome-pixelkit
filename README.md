@@ -11,48 +11,20 @@ A repository with everything about the Kano Pixel Kit
 - [📌 Pinout](#pinout)
 - [💾 Integrated Circuits](#integrated-circuits)
 - [🐍 Programming Lanuages](#programming-languages)
-- [💻 Examples](#examples)
-- [🪲 Bugs](#bugs)
 
 
 # Pinout
-- NeoPixel LEDs 💡 = GPIO4
-- Buzzer 🔊 = GPIO22
-- Dial/Potentiometer 🎛️ = GPIO36/VP
-- MEMS microphone 🎙️ = GPIO39/VN
-- Joystick up 🕹️ = GPIO35
-- Joystick down 🕹️ = GPIO34
-- Joystick left 🕹️ = GPIO26
-- Joystick right 🕹️ = GPIO25
-- Joystick click 🕹️ = GPIO27
-- Button B 🎛️ = GPIO18
-- Button A 🎛️ = GPIO23
-- Reset Button 🎛️ = GPIO5
+No pinout yet :(
 
 
 # Integrated Circuits
-## FTDI FT231XS USB-to-UART converter
-1. The FT231XS on the Pixel Kit is used to connect to its ESP-WROOM-32 microntroller
-2. It is also used to make serial devices for the USB devies connected to the USB-A ports
-
-## Terminus FE1.1S USB 2.0 port hub
-1. Connects all the USB-A ports on the top of the Pixel Kit into one unified port
-2. It routes its output into the FT231XS
+## Allwinner R40
+1. Runs the helper that connects to Kano Code
+2. Runs Linux
+## AXP221S PMU
+1. Manages power to all the compnents
 
 
 # Programming Languages
-## MicroPython
-The Pixel Kit can run MicroPython using [Pixel32](https://github.com/murilopolese/kano-pixel-kit-pixel32), a library that allows you to code your Pixel Kit using a browser.
-## CircuitPython
-The Pixel Kit can run CircuitPython using [this installation](https://circuitpython.org/board/doit_esp32_devkit_v1/) and [my helper libraries](https://github.com/colinvail6/awesome-pixelkit/tree/main/src/circuitpython).
-## Arduino
-Install the ESP32 boards package and select "ESP32 Dev Module", then set "Flash Mode" to DIO. Flash whatever examples you want to try. (helper library work in progess)
-
-
-# Examples
-## CircuitPython
-[Fast Perlin noise algorithm](https://github.com/colinvail6/awesome-pixelkit/blob/main/code/circuitpython/fastperlin.py)
-
-# Bugs
-## USB
-Currently the [automatic bootloader](https://docs.espressif.com/projects/esptool/en/latest/esp32/advanced-topics/boot-mode-selection.html#automatic-bootloader) does not work on Windows 11 with the newest FTDI drivers. See [#1](https://github.com/colinvail6/awesome-pixelkit/issues/1)
+## Python
+The Pixel Kit can run Python using its built-in CPython installation
