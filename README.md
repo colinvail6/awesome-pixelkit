@@ -35,4 +35,4 @@ The Pixel Kit can run Python using its built-in CPython installation.
 # Linux
 ## What Types?
 ### Armbian
-The Pixel Kit can run both Armbian Debian and Armbian Ubuntu.
+The Pixel Kit can run both Armbian Debian (just the terminal) and Armbian Ubuntu (terminal & desktop).
