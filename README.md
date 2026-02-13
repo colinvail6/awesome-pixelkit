@@ -3,8 +3,8 @@
 </p>
 
 
-# awesome-pixelkit
-A repository with everything about the Kano Pixel Kit
+# awesome-pixelkit - Kickstarter Pixel Kit
+A branch of this repository that's all about the Kickstarter Kano Pixel Kit
 
 
 ## 🗂️ Contents
