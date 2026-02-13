@@ -23,6 +23,8 @@ No pinout yet :(
 2. Runs Linux
 ## AXP221S PMU
 1. Manages power to all the compnents
+## Ampak AP6212
+1. Handles Wi-Fi 802.11 b/g/n (2.5GHz) & Bluetooth (4.0) on the Pixel Kit
 
 
 # Programming Languages
