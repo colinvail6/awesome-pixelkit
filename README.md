@@ -22,6 +22,7 @@ No pinout yet :(
 ## Allwinner R40
 1. Runs the helper that connects to Kano Code
 2. Runs Linux
+3. Contains an OpenGL ES 2.0 and 1.1 running Mali 400 GPU
 ## AXP221S PMU
 1. Manages power to all the compnents
 ## Ampak AP6212
