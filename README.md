@@ -28,6 +28,9 @@ A branch of this repository that's all about the Kickstarter Kano Pixel Kit
 # Programming Languages
 ## Python
 The Pixel Kit can run Python using its built-in CPython installation.
+## NodeJS
+The Pixel Kit runs a NodeJS express app by default but can be changed to run other scripts by disabling the kano2-server-lightboard service and enabling a service that runs your script.
+
 
 # Linux
 ## What Types?
