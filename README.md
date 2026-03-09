@@ -8,14 +8,9 @@ A branch of this repository that's all about the Kickstarter Kano Pixel Kit
 
 
 ## 🗂️ Contents
-- [📌 Pinout](#pinout)
 - [💾 Integrated Circuits](#integrated-circuits)
 - [🐍 Programming Lanuages](#programming-languages)
 - [🐧 Linux](#linux)
-
-
-# Pinout
-No pinout yet :(
 
 
 # Integrated Circuits
