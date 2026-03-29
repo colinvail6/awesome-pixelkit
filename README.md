@@ -47,6 +47,7 @@ First, install Armbian by downloading the Armbian imager to your Linux machine (
 
 
 Next, configure WiFi for SSH:
+
 1. Run `sudo nano /media/username/armbi_root/etc/systemd/network/10-wifi.network` and then type:
    ```ini
    [Match]
@@ -64,9 +65,12 @@ Next, configure WiFi for SSH:
        ssid="YOUR_WIFI_NAME"
        psk="YOUR_WIFI_PASSWORD"
    }
+   
 Replace username with your Linux username for your machine and replace YOUR_WIFIF_NAME and YOUR_WIFI_PASSWORD with your actual WiFi and password
+
 3. Put the SD card into the Pixel Kit and turn it on, if you see rainbow, then it worked!
 The rainbow means that the MCU is waiting for the Pixel Kit to tell the matrix to fade out
-4. SSH into root@bananapim2ultra.local using an SSH app (PuTTY for Windows, Termius for all OSes, and Prompt 3 for iOS) and the root password you chose when creating your Armbian install.
+
+5. SSH into root@bananapim2ultra.local using an SSH app (PuTTY for Windows, Termius for all OSes, and Prompt 3 for iOS) and the root password you chose when creating your Armbian install.
 
 Then, modify the device tree to detect the battery
