@@ -39,12 +39,12 @@ The Pixel Kit can run both Armbian Debian (just the terminal) and Armbian Ubuntu
 ## Upgrading
 Upgrading the Pixel Kit is easy, it takes about an hour to set up.
 First, install Armbian by downloading the Armbian imager to your Linux machine (Windows does not work):
-      1. Choose Banana Pi in the manufacturer options
-      2. Select Banana Pi M2 Ultra as the board (the Pixel Kit is a clone of it)
-      3. Select Debian as the operating system since the Pixel Kit does not have a screen
-      4. Select your storage device (it with be /dev/sd*)
-      5. Flash the image. If it warms you about the image being from the community, continue.
-      * Any drive but /dev/sda (system drive)
+1. Choose Banana Pi in the manufacturer options
+2. Select Banana Pi M2 Ultra as the board (the Pixel Kit is a clone of it)
+3. Select Debian as the operating system since the Pixel Kit does not have a screen
+4. Select your storage device (it with be /dev/sd*)
+5. Flash the image. If it warms you about the image being from the community, continue.
+* Any drive but /dev/sda (system drive)
 Next, configure WiFi for SSH:
 1. Run `sudo nano /media/colin/armbi_root/etc/systemd/network/10-wifi.network` and then type:
    ```ini
