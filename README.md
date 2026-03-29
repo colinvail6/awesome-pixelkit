@@ -47,9 +47,11 @@ First, install Armbian by downloading the Armbian imager to your Linux machine (
       * Any drive but /dev/sda (system drive)
 Next, configure WiFi for SSH:
       1. Run **sudo nano /media/colin/armbi_root/etc/systemd/network/10-wifi.network** and then input:
+      '
       [Match]
       Name=wlan0
 
       [Network]
       DHCP=yes
+      '
       2.
