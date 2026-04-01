@@ -66,7 +66,7 @@ Next, configure WiFi for SSH:
        psk="YOUR_WIFI_PASSWORD"
    }
    
-Replace username with your Linux username for your machine and replace YOUR_WIFIF_NAME and YOUR_WIFI_PASSWORD with your actual WiFi and password
+Replace username with your Linux username for your machine and replace YOUR_WIFI_NAME and YOUR_WIFI_PASSWORD with your actual WiFi and password
 
 3. Put the SD card into the Pixel Kit and turn it on, if you see rainbow, then it worked!
 The rainbow means that the MCU is waiting for the Pixel Kit to tell the matrix to fade out
