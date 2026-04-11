@@ -19,19 +19,23 @@ Key differences from CircuitPython:
   - start_microphone() / stop_microphone() for manual mic control
 '''
 
+from __future__ import annotations
+
 import base64
 import struct
 import threading
 import time
+from typing import Any, Callable, Dict, List, Optional, Tuple
+
 from rpcclient import SerialChannel, RPCClient, EventStream
 
 # --- Constants ----------------------------------------------------------------
 
-WIDTH  = 16
-HEIGHT = 8
-_NPIX  = WIDTH * HEIGHT
+WIDTH: int = 16
+HEIGHT: int = 8
+_NPIX: int = WIDTH * HEIGHT
 
-_MODE_MAP = {
+_MODE_MAP: Dict[str, int] = {
     'offline-1': 0,
     'offline-2': 1,
     'online-p1': 2,
@@ -39,50 +43,54 @@ _MODE_MAP = {
     'online-p3': 4,
 }
 
-_PORT_DEFAULT = '/dev/ttyS2'
+_PORT_DEFAULT: str = '/dev/ttyS2'
+
+# Type aliases
+ColorRGB = Tuple[int, int, int]
+Callback = Optional[Callable[..., Any]]
 
 # --- Internal state -----------------------------------------------------------
 
-_channel        = None
-_client         = None
-_events         = None
-_pixels         = [(0, 0, 0)] * _NPIX
-_render_event   = threading.Event()
+_channel: Optional[SerialChannel] = None
+_client: Optional[RPCClient] = None
+_events: Optional[EventStream] = None
+_pixels: List[ColorRGB] = [(0, 0, 0)] * _NPIX
+_render_event: threading.Event = threading.Event()
 _render_event.set()
-_render_pending = False
+_render_pending: bool = False
 
 # Public sensor state
-dial_value       = 0
-microphone_value = 0
+dial_value: int = 0
+microphone_value: int = 0
 
-is_pressing_up    = False
-is_pressing_down  = False
-is_pressing_left  = False
-is_pressing_right = False
-is_pressing_click = False
-is_pressing_a     = False
-is_pressing_b     = False
-is_pressing_reset = False
+is_pressing_up: bool = False
+is_pressing_down: bool = False
+is_pressing_left: bool = False
+is_pressing_right: bool = False
+is_pressing_click: bool = False
+is_pressing_a: bool = False
+is_pressing_b: bool = False
+is_pressing_reset: bool = False
 
-_pending_events = []
-_events_lock    = threading.Lock()
+_pending_events: List[tuple] = []
+_events_lock: threading.Lock = threading.Lock()
 
 # Cached module reference for _fire()
-_self_module = None
+_self_module: Any = None
 
 # --- Callbacks ----------------------------------------------------------------
 
-on_joystick_up    = None
-on_joystick_down  = None
-on_joystick_left  = None
-on_joystick_right = None
-on_joystick_click = None
-on_button_a       = None
-on_button_b       = None
-on_button_reset   = None
-on_dial           = None
-on_microphone     = None
-on_beat           = None
+on_joystick_up: Optional[Callable[[None], None]] = None
+on_joystick_down: Optional[Callable[[None], None]] = None
+on_joystick_left: Optional[Callable[[None], None]] = None
+on_joystick_right: Optional[Callable[[None], None]] = None
+on_joystick_click: Optional[Callable[[None], None]] = None
+on_button_a: Optional[Callable[[None], None]] = None
+on_button_b: Optional[Callable[[None], None]] = None
+on_button_reset: Optional[Callable[[None], None]] = None
+on_dial: Optional[Callable[[int], None]] = None
+on_microphone: Optional[Callable[[int], None]] = None
+on_beat: Optional[Callable[[None], None]] = None
 
 # --- connect ------------------------------------------------------------------
 

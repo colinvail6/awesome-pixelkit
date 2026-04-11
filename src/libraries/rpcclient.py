@@ -5,15 +5,19 @@ rpcclient.py - Python port of the Kano kano2-shared-lib device-bus:
   - event-stream.js     -> EventStream
 '''
 
+from __future__ import annotations
+
 import json
-import serial
 import threading
 import time
 import uuid
 from collections import deque
+from typing import Any, Callable, Deque, Dict, List, Optional
 
-RETRY_DELAY  = 0.1
-CALL_TIMEOUT = 30.0
+import serial
+
+RETRY_DELAY: float = 0.1
+CALL_TIMEOUT: float = 30.0
 
 
 # --- SerialChannel ------------------------------------------------------------
@@ -175,27 +179,28 @@ class SerialChannel:
 # --- RPCClient ----------------------------------------------------------------
 
 class RPCClient:
+    """RPC client for making remote procedure calls over the serial channel."""
 
-    def __init__(self, channel):
-        self.channel = channel
-        self._calls  = {}
-        self._lock   = threading.Lock()
+    def __init__(self, channel: SerialChannel) -> None:
+        self.channel: SerialChannel = channel
+        self._calls: Dict[str, Dict[str, Any]] = {}
+        self._lock: threading.Lock = threading.Lock()
 
         channel.listen('client', self._on_response)
         threading.Thread(target=self._reaper, daemon=True).start()
 
-    def _on_response(self, response):
+    def _on_response(self, response: Dict[str, Any]) -> None:
         call_id = response.get('id')
         with self._lock:
             entry = self._calls.pop(call_id, None)
         if entry:
             entry['cb'](response.get('err'), response.get('value'))
 
-    def _reaper(self):
+    def _reaper(self) -> None:
         while True:
             time.sleep(1.0)
             now = time.monotonic()
-            expired = []
+            expired: List[Callable] = []
             with self._lock:
                 for call_id, entry in list(self._calls.items()):
                     if now >= entry['expires']:
@@ -204,31 +209,37 @@ class RPCClient:
             for cb in expired:
                 cb('Request timed out', None)
 
-    def call(self, method, params=None, callback=None, timeout=None):
+    def call(
+        self,
+        method: str,
+        params: Optional[List[Any]] = None,
+        callback: Optional[Callable[[Optional[str], Any], None]] = None,
+        timeout: Optional[float] = None
+    ) -> RPCClient:
         if callback is None and callable(params):
-            callback = params
-            params   = []
-        params   = params   or []
+            callback = params  # type: ignore
+            params = []
+        params = params or []
         callback = callback or (lambda err, val: None)
-        timeout  = timeout  or CALL_TIMEOUT
+        timeout = timeout or CALL_TIMEOUT
 
         request = {
-            'id':     str(uuid.uuid4()),
+            'id': str(uuid.uuid4()),
             'method': method,
             'params': list(params)
         }
 
         with self._lock:
             self._calls[request['id']] = {
-                'cb':      callback,
+                'cb': callback,
                 'expires': time.monotonic() + timeout
             }
 
-        def _on_send_err(err):
+        def _on_send_err(err: Optional[str]) -> None:
             if err:
                 with self._lock:
                     self._calls.pop(request['id'], None)
-                callback(err, None)
+                callback(err, None)  # type: ignore
 
         self.channel.send('rpc-request', request, _on_send_err)
         return self
@@ -237,22 +248,23 @@ class RPCClient:
 # --- EventStream --------------------------------------------------------------
 
 class EventStream:
+    """Event stream handler for receiving events from the device."""
 
-    def __init__(self, channel):
-        self._handlers = {}
-        self._lock     = threading.Lock()
-        self._queue    = deque()
-        self._q_sem    = threading.Semaphore(0)
+    def __init__(self, channel: SerialChannel) -> None:
+        self._handlers: Dict[str, List[Callable]] = {}
+        self._lock: threading.Lock = threading.Lock()
+        self._queue: Deque[tuple] = deque()
+        self._q_sem: threading.Semaphore = threading.Semaphore(0)
 
         channel.listen('event', self._enqueue)
         threading.Thread(target=self._dispatcher, daemon=True).start()
 
-    def _enqueue(self, message):
+    def _enqueue(self, message: Dict[str, Any]) -> None:
         if message.get('type') == 'event':
             self._queue.append((message.get('name'), message.get('detail', {})))
             self._q_sem.release()
 
-    def _dispatcher(self):
+    def _dispatcher(self) -> None:
         while True:
             self._q_sem.acquire()
             try:
@@ -267,22 +279,22 @@ class EventStream:
                 except Exception:
                     pass
 
-    def on(self, event, callback):
+    def on(self, event: str, callback: Callable) -> None:
         with self._lock:
             self._handlers.setdefault(event, []).append(callback)
 
-    def remove_listener(self, event, callback):
+    def remove_listener(self, event: str, callback: Callable) -> None:
         with self._lock:
             handlers = self._handlers.get(event, [])
             if callback in handlers:
                 handlers.remove(callback)
 
-    def remove_all_listeners(self, event=None):
+    def remove_all_listeners(self, event: Optional[str] = None) -> None:
         with self._lock:
             if event:
                 self._handlers.pop(event, None)
             else:
                 self._handlers.clear()
 
-    def stop(self, callback=None):
+    def stop(self, callback: Optional[Callable] = None) -> None:
         self.channel.close(callback)
