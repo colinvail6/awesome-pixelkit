@@ -157,6 +157,31 @@ def interrupt():
 def check_controls():
     '''Poll all controls and fire callbacks. Call once per loop iteration.'''
     _dispatch_events()
+    _check_microphone()
+
+
+def _check_microphone():
+    '''Check microphone level changes and beat detection. Called by check_controls().'''
+    global _mic_last_reported, _mic_last_val
+    
+    if not _mic_running:
+        return
+    
+    with _mic_lock:
+        val     = microphone_value
+        history = list(_beat_history)
+    
+    # Fire on_microphone if level changed enough
+    if abs(val - _mic_last_reported) >= _mic_threshold:
+        _mic_last_reported = val
+        _fire('on_microphone', val)
+    
+    # Beat detection: current RMS vs rolling average
+    if len(history) >= 5:
+        avg = sum(history[:-1]) / len(history[:-1])
+        cur = history[-1]
+        if cur > avg * _mic_beat_ratio and cur > _mic_beat_min_rms:
+            _fire('on_beat')
 
 
 def _dispatch_events():
@@ -238,10 +263,14 @@ def beep(frequency, duration):
 
 # --- Microphone ---------------------------------------------------------------
 
-_mic_running  = False
-_mic_thread   = None
-_mic_lock     = threading.Lock()
-_beat_history = []
+_mic_running       = False
+_mic_thread        = None
+_mic_lock          = threading.Lock()
+_beat_history      = []
+_mic_last_reported = 0
+_mic_threshold     = 5
+_mic_beat_ratio    = 1.5
+_mic_beat_min_rms  = 0.01
 
 def start_microphone(device=None, samplerate=44100, blocksize=512,
                      threshold=5, scale=2000, beat_ratio=1.5,
@@ -264,7 +293,7 @@ def start_microphone(device=None, samplerate=44100, blocksize=512,
                       as a beat (default 1.5 = 50% louder than rolling avg)
         beat_min_rms: minimum raw RMS to consider as a beat — filters silence
     '''
-    global _mic_running, _mic_thread
+    global _mic_running, _mic_thread, _mic_threshold, _mic_beat_ratio, _mic_beat_min_rms, _mic_last_reported
 
     if _mic_running:
         return
@@ -279,10 +308,13 @@ def start_microphone(device=None, samplerate=44100, blocksize=512,
         return
 
     _mic_running = True
+    _mic_threshold = threshold
+    _mic_beat_ratio = beat_ratio
+    _mic_beat_min_rms = beat_min_rms
+    _mic_last_reported = 0
 
     def _audio_thread():
         global microphone_value, _mic_running
-        last_reported = 0
 
         def _callback(indata, frames, cb_time, status):
             global microphone_value
@@ -301,22 +333,6 @@ def start_microphone(device=None, samplerate=44100, blocksize=512,
                             callback=_callback):
             while _mic_running:
                 time.sleep(0.02)
-
-                with _mic_lock:
-                    val     = microphone_value
-                    history = list(_beat_history)
-
-                # Fire on_microphone if level changed enough
-                if abs(val - last_reported) >= threshold:
-                    last_reported = val
-                    _fire('on_microphone', val)
-
-                # Beat detection: current RMS vs rolling average
-                if len(history) >= 5:
-                    avg = sum(history[:-1]) / len(history[:-1])
-                    cur = history[-1]
-                    if cur > avg * beat_ratio and cur > beat_min_rms:
-                        _fire('on_beat')
 
     _mic_thread = threading.Thread(target=_audio_thread, daemon=True)
     _mic_thread.start()
