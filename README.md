@@ -22,7 +22,7 @@ A branch of this repository that's all about the Kickstarter Kano Pixel Kit
 1. Manages power to all the compnents
 ## Ampak AP6212
 1. Handles Wi-Fi 802.11 b/g/n (2.4GHz) & Bluetooth (4.0) on the Pixel Kit
-## Atmel ATSAMD21
+## Unknown MCU
 1. Handles the NeoPixel matrix, buttons, joystick, buzzer, and dial
 
 # Programming Languages
